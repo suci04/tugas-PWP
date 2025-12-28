@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Cetak Kartu - {{ user.nama_lengkap }}</title>
+
+<style>
+    body { font-family: Arial, sans-serif; background: #fff; }
+    .card {
+        width: 450px;
+        background: #fff;
+        padding: 25px;
+        margin: 40px auto;
+        border: 2px solid #333;
+        position: relative;
+        overflow: hidden;
+    }
+    .card h3 { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #333; padding-bottom: 10px; }
+    
+    /* Bagian Foto di Sebelah Kanan */
+    .photo-container {
+        width: 100px;
+        height: 130px;
+        border: 1px solid #333;
+        float: right;
+        margin-left: 15px;
+    }
+    .photo-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .info-section { margin-top: 10px; }
+    .row { display: flex; margin-bottom: 8px; font-size: 15px; }
+    .label { width: 130px; font-weight: bold; }
+    
+    .footer {
+        text-align: center;
+        margin-top: 20px;
+        font-weight: bold;
+        border-top: 1px dashed #333;
+        padding-top: 10px;
+    }
+
+    /* Sembunyikan tombol cetak saat diprint */
+    @media print {
+        .no-print { display: none; }
+    }
+</style>
+</head>
+<body>
+
+<div class="card">
+    <h3>Kartu Lamaran Kerja</h3>
+
+    <div class="photo-container">
+        <img src="{{ url_for('static', filename='img/profiles/' + (user.foto_profil if user.foto_profil else 'default.png')) }}" alt="Foto Profil">
+    </div>
+
+    <div class="info-section">
+        <div class="row">
+            <span class="label">Nama</span>
+            <span>: {{ user.nama_lengkap }}</span>
+        </div>
+        <div class="row">
+            <span class="label">Jurusan</span>
+            <span>: {{ user.jurusan if user.jurusan else '-' }}</span>
+        </div>
+        <div class="row">
+            <span class="label">Tamatan Sekolah</span>
+            <span>: {{ user.sekolah if user.sekolah else '-' }}</span>
+        </div>
+        <div class="row">
+            <span class="label">Jenis Kelamin</span>
+            <span>: {{ user.jenis_kelamin if user.jenis_kelamin else '-' }}</span>
+        </div>
+        <div class="row">
+            <span class="label">No. Telp</span>
+            <span>: {{ user.no_telp if user.no_telp else '-' }}</span>
+        </div>
+    </div>
+
+    <div style="clear: both;"></div>
+
+    <div class="footer">
+        KARTU WAJIB DIBAWA SAAT INTERVIEW
+    </div>
+</div>
+
+<div style="text-align: center;" class="no-print">
+    <button onclick="window.print()" style="padding: 10px 20px; cursor: pointer;">Cetak Kartu Sekarang</button>
+</div>
+
+</body>
+</html>

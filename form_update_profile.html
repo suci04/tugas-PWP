@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <title>Edit Profil - Work Hire</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { display: flex; margin: 0; background: #F0F4F8; font-family: Arial; }
+        .sidebar { width: 250px; background: #0A1145; min-height: 100vh; color: white; padding: 20px; }
+        .sidebar a { color: white; text-decoration: none; display: block; padding: 12px; }
+        .sidebar li.active { background: rgba(255,255,255,0.1); border-radius: 8px; }
+
+        .form-card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            max-width: 500px;
+        }
+
+        label { font-weight: bold; display: block; margin-bottom: 8px; color: #333; }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .btn-save {
+            width: 100%;
+            padding: 12px;
+            background: #28A745;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .back-link {
+            color: #666;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .foto-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #0A1145;
+            display: block;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h2>Work Hire</h2>
+    <p style="color:#888;font-size:12px;">Menu Utama</p>
+    <ul style="list-style:none;padding:0;">
+        <li><a href="/dashboard"><i class="fas fa-th-large"></i> Perusahaan</a></li>
+        <li><a href="/lamaran"><i class="fas fa-file-alt"></i> Lamaran Anda</a></li>
+    </ul>
+
+    <p style="color:#888;font-size:12px;margin-top:20px;">Lainnya</p>
+    <ul style="list-style:none;padding:0;">
+        <li class="active"><a href="/profile"><i class="fas fa-user"></i> Profil Saya</a></li>
+        <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Keluar</a></li>
+    </ul>
+</div>
+
+<div style="flex:1;padding:40px;">
+    <h2>Edit Profile</h2>
+    <a href="/profile" class="back-link">← Kembali ke Profil</a>
+
+    <div class="form-card">
+        <form action="/update_profile_action" method="POST" enctype="multipart/form-data">
+
+            <!-- FOTO PROFIL (SUDAH SESUAI BACKEND BARU) -->
+            <label>Foto Profil</label>
+            <img
+                id="previewFoto"
+                class="foto-preview"
+                src="{{ url_for('static', filename='img/profiles/' + (user.foto_profil if user.foto_profil else 'default.png')) }}"
+            >
+            <input type="file" name="foto" accept="image/*" onchange="previewImage(event)">
+
+            <!-- FIELD LAMA (TIDAK DIUBAH) -->
+            <label>Nama Lengkap</label>
+            <input type="text" name="nama" value="{{ user.nama_lengkap }}" required>
+
+            <label>Email (Tidak bisa diubah)</label>
+            <input type="text" value="{{ user.email }}" disabled style="background:#eee;">
+
+            <label>Password Baru</label>
+            <input type="password" name="password" placeholder="******">
+
+            <label>No. Telp</label>
+            <input type="text" name="telp" value="{{ user.no_telp }}">
+
+            <label>Jenis Kelamin</label>
+            <select name="jk">
+                <option value="Laki-laki" {% if user.jenis_kelamin == 'Laki-laki' %}selected{% endif %}>Laki-laki</option>
+                <option value="Perempuan" {% if user.jenis_kelamin == 'Perempuan' %}selected{% endif %}>Perempuan</option>
+            </select>
+
+            <label>Tamatan Sekolah</label>
+            <input type="text" name="tamatan_sekolah" value="{{ user.tamatan_sekolah }}">
+
+            <label>Jurusan</label>
+            <input type="text" name="jurusan" value="{{ user.jurusan }}">
+
+            <button type="submit" class="btn-save">Simpan Perubahan</button>
+        </form>
+    </div>
+</div>
+
+<script>
+function previewImage(event) {
+    const img = document.getElementById('previewFoto');
+    const file = event.target.files[0];
+    if (file) {
+        img.src = URL.createObjectURL(file);
+    }
+}
+</script>
+
+</body>
+</html>

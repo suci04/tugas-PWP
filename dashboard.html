@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - Work Hire</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style> body { display: flex; margin: 0; background: #F0F4F8; font-family: Arial; } .sidebar { width: 250px; background: #0A1145; min-height: 100vh; color: white; padding: 20px; } .sidebar a { color: white; text-decoration: none; display: block; padding: 12px; } .sidebar li.active { background: rgba(255,255,255,0.1); border-radius: 8px; } </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Work Hire</h2>
+        <p style="color: #888; font-size: 12px;">Menu Utama</p>
+        <ul style="list-style: none; padding: 0;">
+            <li class="active"><a href="/dashboard"><i class="fas fa-th-large"></i> Perusahaan</a></li>
+            <li><a href="/lamaran"><i class="fas fa-file-alt"></i> Lamaran Anda</a></li>
+        </ul>
+        <p style="color: #888; font-size: 12px; margin-top: 20px;">Lainnya</p>
+        <ul style="list-style: none; padding: 0;">
+            <li><a href="/profile"><i class="fas fa-user"></i> Profil Saya</a></li>
+            <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Keluar</a></li>
+        </ul>
+    </div>
+    <div style="flex: 1; padding: 40px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+             <h2 style="margin-bottom: 20px;">Daftar Perusahaan</h2>
+             <div style="display: flex; align-items: center;">
+                <span style="margin-right: 10px; font-weight: bold;">Hi, {{ session.nama }}</span>
+                <img src="{{ url_for('static', filename='img/profiles/' + (session.foto if session.foto else 'default.png')) }}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+             </div>
+        </div>
+       
+        <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+            <thead style="background: #E2E8F0; text-align: left;">
+                <tr>
+                    <th style="padding: 15px;">No</th>
+                    <th style="padding: 15px;">Perusahaan</th>
+                    <th style="padding: 15px;">Posisi</th>
+                    <th style="padding: 15px;">Daftar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for l in lowongan %}
+                <tr style="border-bottom: 1px solid #EEE;">
+                    <td style="padding: 15px;">{{ loop.index }}</td>
+                    <td style="padding: 15px;">{{ l.nama_perusahaan }}</td>
+                    <td style="padding: 15px;">{{ l.posisi }}</td>
+                    <td style="padding: 15px;">
+                        <a href="/daftar/{{ l.id }}" style="color: #28A745; font-size: 20px; text-decoration: none;"><i class="fas fa-user-plus"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

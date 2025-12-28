@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Lamaran & Kartu</title>
+<style>
+body{font-family:Arial;background:#f5f5f5;display:flex;margin:0;}
+.sidebar{width:250px;background:#0A1145;min-height:100vh;color:white;padding:20px;}
+.sidebar a{color:white;text-decoration:none;display:block;padding:12px;}
+.sidebar li.active{background: rgba(255,255,255,0.1); border-radius:8px;}
+.content{flex:1;padding:40px;}
+table{width:100%;border-collapse:collapse;background:white;}
+th,td{padding:10px;border:1px solid #ccc;text-align:left;}
+th{background:#eee;}
+.btn-print{background:#28A745;color:white;padding:5px 10px;border:none;border-radius:5px;cursor:pointer;margin-right:5px;}
+.btn-delete{background:#DC3545;color:white;padding:5px 10px;border:none;border-radius:5px;cursor:pointer;}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+<h2>Work Hive</h2>
+<ul style="list-style:none;padding:0;">
+<li><a href="/dashboard">Perusahaan</a></li>
+<li class="active"><a href="/lamaran">Lamaran Anda</a></li>
+<li><a href="/profile">Profil Saya</a></li>
+<li><a href="/logout">Keluar</a></li>
+</ul>
+</div>
+
+<div class="content">
+<h2>Lamaran Anda</h2>
+<table>
+<tr><th>Nama</th><th>Jurusan</th><th>Tamatan Sekolah</th><th>Jenis Kelamin</th><th>Aksi</th></tr>
+{% for l in lamaran %}
+<tr>
+<td>{{ l.nama_lengkap }}</td>
+<td>{{ l.jurusan }}</td>
+<td>{{ l.tamatan_sekolah }}</td>
+<td>{{ l.jenis_kelamin }}</td>
+<td>
+    <button class="btn-print" onclick="cetakKartu('{{ l.nama_lengkap|e }}','{{ l.jurusan|e }}','{{ l.tamatan_sekolah|e }}','{{ l.jenis_kelamin|e }}','{{ session['foto'] }}')">Cetak Kartu</button>
+    <button class="btn-delete" onclick="hapusLamaran('{{ l.id }}')">Hapus</button>
+</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+
+<script>
+function cetakKartu(nama,jurusan,tamatan_sekolah,jk,foto){
+    var w = window.open('','_blank','width=450,height=600');
+    w.document.write('<html><head><title>Kartu Lamaran</title><style>\
+        body{font-family:Arial;background:#f5f5f5;padding:20px}\
+        .card{width:350px;background:#fff;padding:20px;margin:0 auto;border:1px solid #999;position:relative}\
+        .card h3{text-align:center;margin-bottom:15px}\
+        .row{display:flex;margin-bottom:4px;font-size:14px}\
+        .row span:first-child{width:90px;font-weight:bold}\
+        .row span:last-child{flex:1}\
+        .photo{width:90px;height:110px;border:1px solid #333;position:absolute;top:20px;right:20px;object-fit:cover}\
+        .footer{text-align:center;margin-top:15px;font-size:12px}\
+    </style></head><body>');
+    
+    w.document.write('<div class="card">');
+    w.document.write('<h3>Kartu Lamaran</h3>');
+    w.document.write('<img src="/static/img/profiles/'+foto+'" class="photo">');
+    w.document.write('<div class="row"><span>Nama</span><span>: '+nama+'</span></div>');
+    w.document.write('<div class="row"><span>Jurusan</span><span>: '+jurusan+'</span></div>');
+    w.document.write('<div class="row"><span>Tamatan Sekolah</span><span>: '+tamatan_sekolah+'</span></div>');
+    w.document.write('<div class="row"><span>Gender</span><span>: '+jk+'</span></div>');
+    w.document.write('<div class="footer">Kartu Wajib Dibawa Saat Interview</div>');
+    w.document.write('</div>');
+    w.document.write('<script>window.print();<\/script></body></html>');
+    w.document.close();
+}
+
+function hapusLamaran(id){
+    if(confirm("Apakah Anda yakin ingin menghapus lamaran ini?")){
+        // Pastikan URL /hapus_lamaran/ sesuai dengan yang ada di app.py
+        fetch('/hapus_lamaran/' + id, {method:'POST'})
+        .then(res => { 
+            if(res.ok) {
+                location.reload(); 
+            } else {
+                alert("Gagal menghapus data dari server.");
+            }
+        })
+        .catch(err => console.error("Error saat menghapus:", err));
+    }
+}
+</script>
+
+</body>
+</html>

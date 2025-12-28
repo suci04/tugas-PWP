@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profil Saya - Work Hire</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { display: flex; margin: 0; background: #F0F4F8; font-family: Arial; }
+        .sidebar { width: 250px; background: #0A1145; min-height: 100vh; color: white; padding: 20px; }
+        .sidebar a { color: white; text-decoration: none; display: block; padding: 12px; }
+        .sidebar li.active { background: rgba(255,255,255,0.1); border-radius: 8px; }
+        .profile-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); max-width: 600px; }
+        .profile-row { display: flex; border-bottom: 1px solid #eee; padding: 15px 0; }
+        .profile-label { width: 150px; font-weight: bold; color: #666; }
+        .profile-value { flex: 1; color: #333; }
+        .btn-update { display: inline-block; margin-top: 20px; padding: 12px 30px; background: #0A1145; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>Work Hire</h2>
+    <p style="color: #888; font-size: 12px;">Menu Utama</p>
+    <ul style="list-style: none; padding: 0;">
+        <li><a href="/dashboard"><i class="fas fa-th-large"></i> Perusahaan</a></li>
+        <li><a href="/lamaran"><i class="fas fa-file-alt"></i> Lamaran Anda</a></li>
+    </ul>
+    <p style="color: #888; font-size: 12px; margin-top: 20px;">Lainnya</p>
+    <ul style="list-style: none; padding: 0;">
+        <li class="active"><a href="/profile"><i class="fas fa-user"></i> Profil Saya</a></li>
+        <li><a href="/logout"><i class="fas fa-sign-out-alt"></i> Keluar</a></li>
+    </ul>
+</div>
+
+<div style="flex: 1; padding: 40px;">
+    <h2 style="margin-bottom: 30px;">My Profile</h2>
+
+    <div class="profile-card">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <img src="{{ url_for('static', filename='img/profiles/' + user.foto_profil) }}?v={{ range(1, 99999) | random }}" 
+                 style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
+            <h3>{{ user.nama_lengkap }}</h3>
+        </div>
+
+        <div class="profile-row">
+            <div class="profile-label">Email</div>
+            <div class="profile-value">{{ user.email }}</div>
+        </div>
+
+        <div class="profile-row">
+            <div class="profile-label">No. Telp</div>
+            <div class="profile-value">{{ user.no_telp }}</div>
+        </div>
+
+        <div class="profile-row">
+            <div class="profile-label">Jenis Kelamin</div>
+            <div class="profile-value">{{ user.jenis_kelamin or '-' }}</div>
+        </div>
+
+        <div class="profile-row">
+            <div class="profile-label">Tamatan Sekolah</div>
+            <div class="profile-value">{{ user.tamatan_sekolah or '-' }}</div>
+        </div>
+
+        <div class="profile-row">
+            <div class="profile-label">Jurusan</div>
+            <div class="profile-value">{{ user.jurusan or '-' }}</div>
+        </div>
+
+        <a href="/edit_profile" class="btn-update">Update Profile</a>
+    </div>
+</div>
+
+</body>
+</html>

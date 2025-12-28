@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Form Pendaftaran</title>
+    <style>
+        body { font-family: sans-serif; background-color: #F0F4F8; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 400px; }
+        input, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        label { font-weight: bold; color: #333; }
+        button { width: 100%; padding: 12px; background-color: #28A745; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        button:hover { background-color: #218838; }
+        .back-link { text-decoration: none; color: #666; font-size: 14px; margin-bottom: 20px; display: inline-block; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/dashboard" class="back-link">← Kembali</a>
+        <h2 style="margin-top: 0;">Form Pendaftaran</h2>
+        <p style="color: #666; margin-bottom: 20px;">Posisi: <strong>{{ job.posisi }}</strong> di {{ job.nama_perusahaan }}</p>
+
+        <form action="/submit_lamaran" method="POST">
+            <input type="hidden" name="perusahaan" value="{{ job.nama_perusahaan }}">
+
+            <label>Nama Lengkap</label>
+            <input type="text" name="nama" required placeholder="Masukkan nama Anda">
+
+            <label>Jurusan</label>
+            <input type="text" name="jurusan" required placeholder="Contoh: RPL / TKJ">
+
+            <label>Tamatan Sekolah</label>
+            <input type="text" name="tamatan_sekolah" required placeholder="Nama Sekolah Asal">
+
+            <label>Jenis Kelamin</label>
+            <select name="jk">
+                <option value="Laki-laki">Laki-laki</option>
+                <option value="Perempuan">Perempuan</option>
+            </select>
+
+            <button type="submit">Daftar Sekarang</button>
+        </form>
+    </div>
+</body>
+</html>
